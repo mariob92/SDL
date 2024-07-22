@@ -2754,7 +2754,7 @@ extern "C" {
  *
  * This is useful as a debug tool to validate memory leaks, but shouldn't ever
  * be set in production applications, as other libraries used by the
- * application might use dbus under the hood and this cause cause crashes if
+ * application might use dbus under the hood and this can cause crashes if
  * they continue after SDL_Quit().
  *
  * The variable can be set to the following values:
@@ -2948,6 +2948,7 @@ extern "C" {
  * This hint is currently supported on the following drivers:
  *
  * - Raspberry Pi (raspberrypi)
+ * - Wayland (wayland)
  *
  * This hint should be set before SDL is initialized.
  *
@@ -3714,7 +3715,7 @@ extern "C" {
  * A variable specifying the URL to a WinRT app's privacy policy.
  *
  * All network-enabled WinRT apps must make a privacy policy available to its
- * users. On Windows 8, 8.1, and RT, Microsoft mandates that this policy be be
+ * users. On Windows 8, 8.1, and RT, Microsoft mandates that this policy be
  * available in the Windows Settings charm, as accessed from within the app.
  * SDL provides code to add a URL-based link there, which can point to the
  * app's privacy policy.
@@ -3882,7 +3883,8 @@ extern SDL_DECLSPEC void SDLCALL SDL_ResetHints(void);
 /**
  * Get the value of a hint.
  *
- * The returned string follows the SDL_GetStringRule.
+ * This returns temporary memory which will be automatically freed later, and
+ * can be claimed with SDL_ClaimTemporaryMemory().
  *
  * \param name the hint to query.
  * \returns the string value of a hint or NULL if the hint isn't set.

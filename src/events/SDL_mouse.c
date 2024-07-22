@@ -312,7 +312,7 @@ void SDL_RemoveMouse(SDL_MouseID mouseID, SDL_bool send_event)
         return;
     }
 
-    SDL_FreeLater(SDL_mice[mouse_index].name);  // SDL_GetMouseInstanceName returns this pointer.
+    SDL_free(SDL_mice[mouse_index].name);
 
     if (mouse_index != SDL_mouse_count - 1) {
         SDL_memcpy(&SDL_mice[mouse_index], &SDL_mice[mouse_index + 1], (SDL_mouse_count - mouse_index - 1) * sizeof(SDL_mice[mouse_index]));
@@ -346,7 +346,7 @@ SDL_bool SDL_HasMouse(void)
     return (SDL_mouse_count > 0);
 }
 
-SDL_MouseID *SDL_GetMice(int *count)
+const SDL_MouseID *SDL_GetMice(int *count)
 {
     int i;
     SDL_MouseID *mice;
@@ -367,16 +367,16 @@ SDL_MouseID *SDL_GetMice(int *count)
         }
     }
 
-    return mice;
+    return SDL_FreeLater(mice);
 }
 
-const char *SDL_GetMouseInstanceName(SDL_MouseID instance_id)
+const char *SDL_GetMouseNameForID(SDL_MouseID instance_id)
 {
     int mouse_index = SDL_GetMouseIndex(instance_id);
     if (mouse_index < 0) {
         return NULL;
     }
-    return SDL_mice[mouse_index].name;
+    return SDL_CreateTemporaryString(SDL_mice[mouse_index].name);
 }
 
 void SDL_SetDefaultCursor(SDL_Cursor *cursor)
@@ -409,7 +409,7 @@ void SDL_SetDefaultCursor(SDL_Cursor *cursor)
             }
         }
 
-        if (mouse->FreeCursor && default_cursor->driverdata) {
+        if (mouse->FreeCursor && default_cursor->internal) {
             mouse->FreeCursor(default_cursor);
         } else {
             SDL_free(default_cursor);
@@ -1493,8 +1493,8 @@ SDL_Cursor *SDL_CreateColorCursor(SDL_Surface *surface, int hot_x, int hot_y)
         return NULL;
     }
 
-    if (surface->format->format != SDL_PIXELFORMAT_ARGB8888) {
-        temp = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_ARGB8888);
+    if (surface->format != SDL_PIXELFORMAT_ARGB8888) {
+        temp = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_ARGB8888);
         if (!temp) {
             return NULL;
         }
@@ -1628,7 +1628,7 @@ void SDL_DestroyCursor(SDL_Cursor *cursor)
                 mouse->cursors = curr->next;
             }
 
-            if (mouse->FreeCursor && curr->driverdata) {
+            if (mouse->FreeCursor && curr->internal) {
                 mouse->FreeCursor(curr);
             } else {
                 SDL_free(curr);

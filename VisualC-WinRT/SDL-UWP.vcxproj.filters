@@ -426,9 +426,6 @@
     <ClInclude Include="..\src\video\SDL_blit_slow.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\video\SDL_clipboard_c.h">
-      <Filter>video</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\video\SDL_egl_c.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -439,6 +436,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\video\SDL_RLEaccel_c.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\video\SDL_surface_c.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\video\SDL_sysvideo.h">
@@ -533,7 +533,7 @@
     </ClCompile>
     <ClCompile Include="..\src\audio\SDL_audioresample.c">
       <Filter>Source Files</Filter>
-    </ClCompile>        
+    </ClCompile>
     <ClCompile Include="..\src\audio\SDL_mixer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -954,6 +954,7 @@
     <ClInclude Include="..\include\SDL3\SDL_main_impl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\video\SDL_clipboard_c.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\joystick\windows\SDL_windows_gaming_input.c">
